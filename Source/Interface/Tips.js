@@ -122,6 +122,8 @@ this.Tips = new Class({
 	},
 
 	elementEnter: function(event, element){
+		if (!this.tip) document.id(this);
+
 		this.container.empty();
 		
 		['title', 'text'].each(function(value){
