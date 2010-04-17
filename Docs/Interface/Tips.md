@@ -72,9 +72,13 @@ Tips Event: show {#Tips:show}
 
 ### Example:
 
-	myTips.addEvent('show', function(tip, el){
-		tip.fade('in');
+	var myTips = new Tips('.tooltips', {
+		onShow: function(tip, el){
+			tip.fade('in');
+		}
 	});
+
+
 
 Tips Event: hide {#Tips:hide}
 ---------------------------------
@@ -92,8 +96,10 @@ Tips Event: hide {#Tips:hide}
 
 ### Example:
 
-	myTips.addEvent('hide', function(tip, el){
-		tip.fade('out');
+	var myTips = new Tips('.tooltips', {
+		onShow: function(tip, el){
+			tip.fade('out');
+		}
 	});
 
 
