@@ -21,6 +21,9 @@ provides: [Log]
 ...
 */
 
+// Cannot complain about any of this. I would consider dropping Legacy support for 2.0 though.
+// And implement as a compat layer.
+
 (function(){
 
 var global = this;

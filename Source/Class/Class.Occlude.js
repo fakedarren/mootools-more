@@ -20,6 +20,11 @@ provides: [Class.Occlude]
 ...
 */
 
+/* 
+Whilst I like the concept I think Occlude is not the best name for this.
+If you know what occlusion is you may be able to implement this yourself. Again, just thinking out loud.
+*/
+
 Class.Occlude = new Class({
 
 	occlude: function(property, element){

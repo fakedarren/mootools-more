@@ -26,6 +26,7 @@ provides: [Chain.Wait]
 	var wait = {
 		wait: function(duration){
 			return this.chain(function(){
+				// not a fan of $pick, no need surely
 				this.callChain.delay($pick(duration, 500), this);
 			}.bind(this));
 		}
@@ -33,6 +34,7 @@ provides: [Chain.Wait]
 
 	Chain.implement(wait);
 
+	// I am really against conditional dependencies. If it's not a requirement then it should not be here. IMO.
 	if (window.Fx){
 		Fx.implement(wait);
 		['Css', 'Tween', 'Elements'].each(function(cls){
@@ -42,6 +44,7 @@ provides: [Chain.Wait]
 
 	Element.implement({
 		chains: function(effects){
+			// Hard to read
 			$splat($pick(effects, ['tween', 'morph', 'reveal'])).each(function(effect){
 				effect = this.get(effect);
 				if (!effect) return;

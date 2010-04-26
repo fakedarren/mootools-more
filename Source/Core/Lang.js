@@ -20,7 +20,9 @@ provides: [MooTools.Lang]
 */
 
 (function(){
-
+	
+	// maybe data should be a reference to this? this.language etc as opposed to data.language?
+	// Or defaults. Not sure.
 	var data = {
 		language: 'en-US',
 		languages: {
@@ -38,15 +40,19 @@ provides: [MooTools.Lang]
 		setLanguage: function(lang){
 			if (!data.languages[lang]) return this;
 			data.language = lang;
-			this.load();
-			this.fireEvent('langChange', lang);
+			this.loadLanguage();
+			// renamed to languageChange, more verbose but meh
+			this.fireEvent('languageChange', lang);
 			return this;
 		},
-
-		load: function() {
+		
+		// renamed to loadLanguage as more verbose
+		loadLanguage: function() {
 			var langs = this.cascade(this.getCurrentLanguage());
 			cascaded = {};
-			$each(langs, function(set, setName){
+			Object.each(langs, function(set, setName){
+				// Don't think we should have method names like this
+				// Close to $lambda so confusing
 				cascaded[setName] = this.lambda(set);
 			}, this);
 		},
@@ -72,12 +78,14 @@ provides: [MooTools.Lang]
 
 		lambda: function(set) {
 			(set || {}).get = function(key, args){
+				// This line needs cleaning up, it's confusing I think
 				return $lambda(set[key]).apply(this, $splat(args));
 			};
 			return set;
 		},
 
 		get: function(set, key, args){
+			// Conditional and ternary on one line is confusing
 			if (cascaded && cascaded[set]) return (key ? cascaded[set].get(key, args) : cascaded[set]);
 		},
 
@@ -87,8 +95,8 @@ provides: [MooTools.Lang]
 			if (!langData[set]) langData[set] = {};
 			$extend(langData[set], members);
 			if (lang == this.getCurrentLanguage()){
-				this.load();
-				this.fireEvent('langChange', lang);
+				this.loadLanguage();
+				this.fireEvent('languageChange', lang);
 			}
 			return this;
 		},
