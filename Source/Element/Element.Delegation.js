@@ -24,31 +24,28 @@ provides: [Element.Delegation]
 ...
 */
 
-/* This is moot as this will not be needed in 2.0 */
-
 (function(addEvent, removeEvent){
 	
 	var match = /(.*?):relay\(([^)]+)\)$/,
 		combinators = /[+>~\s]/,
 		splitType = function(type){
 			var bits = type.match(match);
-			// Not a fan of multi-line ternaries
 			return !bits ? {event: type} : {
 				event: bits[1],
 				selector: bits[2]
 			};
 		},
-		check = function(evt, selector){
-			var target = evt.target;
+		check = function(e, selector){
+			var t = e.target;
 			if (combinators.test(selector = selector.trim())){
 				var els = this.getElements(selector);
 				for (var i = els.length; i--; ){
 					var el = els[i];
-					if (target == el || el.hasChild(target)) return el;
+					if (t == el || el.hasChild(t)) return el;
 				}
 			} else {
-				for ( ; target && target != this; target = target.parentNode){
-					if (Element.match(t, selector)) return document.id(target);
+				for ( ; t && t != this; t = t.parentNode){
+					if (Element.match(t, selector)) return document.id(t);
 				}
 			}
 			return null;
@@ -57,7 +54,6 @@ provides: [Element.Delegation]
 	Element.implement({
 
 		addEvent: function(type, fn){
-			// splitted is not a real word
 			var splitted = splitType(type);
 			if (splitted.selector){
 				var monitors = this.retrieve('$moo:delegateMonitors', {});
@@ -77,7 +73,6 @@ provides: [Element.Delegation]
 			var splitted = splitType(type);
 			if (splitted.selector){
 				var events = this.retrieve('events');
-				// Hard to read
 				if (!events || !events[type] || (fn && !events[type].keys.contains(fn))) return this;
 
 				if (fn) removeEvent.apply(this, [type, fn]);
@@ -85,9 +80,6 @@ provides: [Element.Delegation]
 
 				events = this.retrieve('events');
 				if (events && events[type] && events[type].keys.length == 0){
-					// I quite like the $moo 'namespace' in data but it needs to be formailised
-					// if we are to use it
-					// for instance in Form.Validator too
 					var monitors = this.retrieve('$moo:delegateMonitors', {});
 					removeEvent.apply(this, [splitted.event, monitors[type]]);
 					delete monitors[type];
@@ -101,11 +93,7 @@ provides: [Element.Delegation]
 			var events = this.retrieve('events');
 			if (!events || !events[type]) return this;
 			events[type].keys.each(function(fn){
-				// prefer this layout for readability
-				fn.create({
-					bind: bind || this,
-					delay: delay, arguments: args
-				})();
+				fn.create({bind: bind || this, delay: delay, arguments: args})();
 			}, this);
 			return this;
 		}

@@ -27,7 +27,6 @@ Element.implement({
 
 	position: function(options){
 		//call original position if the options are x/y values
-		// These two lines are incredibly hard to read.
 		if (options && ($defined(options.x) || $defined(options.y))) return original ? original.apply(this, arguments) : this;
 		$each(options||{}, function(v, k){ if (!$defined(v)) delete options[k]; });
 		options = $merge({
@@ -52,7 +51,6 @@ Element.implement({
 		/* dollar around getOffsetParent should not be necessary, but as it does not return
 		 * a mootools extended element in IE, an error occurs on the call to expose. See:
 		 * http://mootools.lighthouseapp.com/projects/2706/tickets/333-element-getoffsetparent-inconsistency-between-ie-and-other-browsers */
-		// We need to get to the root of the problem here (which I guess is in measure?)
 		var offsetParent = this.measure(function(){
 			return document.id(this.getOffsetParent());
 		});
@@ -67,31 +65,15 @@ Element.implement({
 		//upperRight, bottomRight, centerRight, upperLeft, bottomLeft, centerLeft
 		//topRight, topLeft, centerTop, centerBottom, center
 		var fixValue = function(option){
-			
-			// the braces make it uglier
-			// but more readable
-			// Maybe we can change the code to be more elegant but readability ftw
-			if ($type(option) != 'string'){
-				return option;
-			}
+			if ($type(option) != 'string') return option;
 			option = option.toLowerCase();
 			var val = {};
-			
-			if (option.test('left')){
-				val.x = 'left';
-			} else if (option.test('right')){
-				val.x = 'right';
-			} else {
-				val.x = 'center';
-			}
-				
-			if (option.test('upper') || option.test('top')){
-				val.y = 'top';
-			} else if (option.test('bottom')) {
-				val.y = 'bottom';
-			} else {
-				val.y = 'center';
-			}
+			if (option.test('left')) val.x = 'left';
+			else if (option.test('right')) val.x = 'right';
+			else val.x = 'center';
+			if (option.test('upper') || option.test('top')) val.y = 'top';
+			else if (option.test('bottom')) val.y = 'bottom';
+			else val.y = 'center';
 			return val;
 		};
 		options.edge = fixValue(options.edge);
@@ -105,9 +87,7 @@ Element.implement({
 		var rel = document.id(options.relativeTo) || document.body,
 				calc = rel == document.body ? window.getScroll() : rel.getPosition(),
 				top = calc.y, left = calc.x;
-				
-		// I accept the code is functional but there must be a way to make it more elegant
-		// Will think more about it
+
 		var dim = this.getDimensions({computeSize: true, styles:['padding', 'border','margin']});
 		var pos = {},
 				prefY = options.offset.y,

@@ -19,18 +19,12 @@ provides: [Element.Shortcuts]
 ...
 */
 
-/*
-I actually think this maybe should be part of core. It's a regular request.
-And as you can see the code is not hectic.
-*/
-
 Element.implement({
 
 	isDisplayed: function(){
 		return this.getStyle('display') != 'none';
 	},
 
-	// Should this (is this) not a custom pseudo? :visible - same with the above method
 	isVisible: function(){
 		var w = this.offsetWidth,
 			h = this.offsetHeight;
