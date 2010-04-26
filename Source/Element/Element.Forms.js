@@ -35,12 +35,17 @@ Element.implement({
 	},
 
 	getSelectedRange: function() {
-		if ($defined(this.selectionStart)) return {start: this.selectionStart, end: this.selectionEnd};
+		if ($defined(this.selectionStart)) return {
+			start: this.selectionStart,
+			end: this.selectionEnd
+		};
 		var pos = {start: 0, end: 0};
 		var range = this.getDocument().selection.createRange();
 		if (!range || range.parentElement() != this) return pos;
+		// rename to duplicate?
 		var dup = range.duplicate();
-		if (this.type == 'text') {
+		if (this.type == 'text'){
+			// sure there is a reason for this
 			pos.start = 0 - dup.moveStart('character', -100000);
 			pos.end = pos.start + range.text.length;
 		} else {
@@ -48,7 +53,7 @@ Element.implement({
 			var offset = value.length;
 			dup.moveToElementText(this);
 			dup.setEndPoint('StartToEnd', range);
-			if(dup.text.length) offset -= value.match(/[\n\r]*$/)[0].length;
+			if (dup.text.length) offset -= value.match(/[\n\r]*$/)[0].length;
 			pos.end = offset - dup.text.length;
 			dup.setEndPoint('StartToStart', range);
 			pos.start = offset - dup.text.length;
@@ -75,7 +80,7 @@ Element.implement({
 	},
 
 	selectRange: function(start, end){
-		if (this.setSelectionRange) {
+		if (this.setSelectionRange){
 			this.focus();
 			this.setSelectionRange(start, end);
 		} else {

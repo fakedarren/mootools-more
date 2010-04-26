@@ -19,6 +19,8 @@ provides: [Elements.from]
 ...
 */
 
+// Nice. However is probably redundant in 2.0?
+
 Elements.from = function(text, excludeScripts){
 	if ($pick(excludeScripts, true)) text = text.stripScripts();
 

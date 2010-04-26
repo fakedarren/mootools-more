@@ -38,8 +38,9 @@ provides: [Element.Pin]
 		pin: function(enable){
 			if (this.getStyle('display') == 'none') return null;
 			
+			// if p is position it should be called position or pos
 			var p,
-					scroll = window.getScroll();
+				scroll = window.getScroll();
 			if (enable !== false){
 				p = this.getPosition();
 				if (!this.retrieve('pinned')){
@@ -50,12 +51,14 @@ provides: [Element.Pin]
 					if (supportsPositionFixed){
 						this.setStyle('position', 'fixed').setStyles(pos);
 					} else {
+						// maintain $moo namespace?
 						this.store('pinnedByJS', true);
 						this.setStyles({
 							position: 'absolute',
 							top: p.y,
 							left: p.x
 						}).addClass('isPinned');
+						// maintain $moo namespace?
 						this.store('scrollFixer', (function(){
 							if (this.retrieve('pinned'))
 								var scroll = window.getScroll();
@@ -69,6 +72,7 @@ provides: [Element.Pin]
 					this.store('pinned', true);
 				}
 			} else {
+				// take it op is offsetParent?
 				var op;
 				if (!Browser.Engine.trident){
 					var parent = this.getParent();

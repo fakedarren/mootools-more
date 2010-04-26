@@ -25,14 +25,14 @@ provides: [Element.Measure]
 Element.implement({
 
 	measure: function(fn){
-		var vis = function(el) {
+		var visibility = function(el) {
 			return !!(!el || el.offsetHeight || el.offsetWidth);
 		};
-		if (vis(this)) return fn.apply(this);
+		if (visibility(this)) return fn.apply(this);
 		var parent = this.getParent(),
 			restorers = [],
 			toMeasure = []; 
-		while (!vis(parent) && parent != document.body) {
+		while (!visibility(parent) && parent != document.body) {
 			toMeasure.push(parent.expose());
 			parent = parent.getParent();
 		}
@@ -46,7 +46,7 @@ Element.implement({
 	},
 
 	expose: function(){
-		if (this.getStyle('display') != 'none') return $empty;
+		if (this.getStyle('display') != 'none') return Function;
 		var before = this.style.cssText;
 		this.setStyles({
 			display: 'block',
@@ -71,11 +71,13 @@ Element.implement({
 			});
 		} else if (parent){
 			try { //safari sometimes crashes here, so catch it
+				// Need to know why this is, it should be fixed in getSize not here
 				dim = getSize(this, options);
 			}catch(e){}
 		} else {
 			dim = {x: 0, y: 0};
 		}
+		// Again not a fan of complex ternaries for readability
 		return $chk(dim.x) ? $extend(dim, {width: dim.x, height: dim.y}) : $extend(dim, {x: dim.width, y: dim.height});
 	},
 
@@ -111,6 +113,7 @@ Element.implement({
 		var styles = {};
 		getStyles.each(function(style){ styles[style] = this.getComputedStyle(style); }, this);
 		var subtracted = [];
+		// I have not investigated exactly what this does but it's really hard to read / follow
 		$each(options.plains, function(plain, key){ //keys: width, height, plains: ['left', 'right'], ['top','bottom']
 			var capitalized = key.capitalize();
 			size['total' + capitalized] = size['computed' + capitalized] = 0;
@@ -135,6 +138,7 @@ Element.implement({
 
 		['Width', 'Height'].each(function(value){
 			var lower = value.toLowerCase();
+			// No $chk
 			if(!$chk(size[lower])) return;
 
 			size[lower] = size[lower] + this['offset' + value] + size['computed' + value];
