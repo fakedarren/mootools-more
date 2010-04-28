@@ -39,7 +39,6 @@ Fx.Reveal = new Class({
 	},
 
 	dissolve: function(){
-		try {
 			if (!this.hiding && !this.showing){
 				if (this.element.getStyle('display') != 'none'){
 					this.hiding = true;
@@ -84,18 +83,10 @@ Fx.Reveal = new Class({
 				this.cancel();
 				this.dissolve();
 			}
-		} catch(e){
-			this.hiding = false;
-			this.element.setStyle('display', 'none');
-			this.callChain.delay(10, this);
-			this.fireEvent('complete', this.element);
-			this.fireEvent('hide', this.element);
-		}
 		return this;
 	},
 
 	reveal: function(){
-		try {
 			if (!this.showing && !this.hiding){
 				if (this.element.getStyle('display') == 'none' ||
 					 this.element.getStyle('visiblity') == 'hidden' ||
@@ -154,17 +145,6 @@ Fx.Reveal = new Class({
 				this.cancel();
 				this.reveal();
 			}
-		} catch(e){
-			this.element.setStyles({
-				display: this.options.display,
-				visiblity: 'visible',
-				opacity: 1
-			});
-			this.showing = false;
-			this.callChain.delay(10, this);
-			this.fireEvent('complete', this.element);
-			this.fireEvent('show', this.element);
-		}
 		return this;
 	},
 
