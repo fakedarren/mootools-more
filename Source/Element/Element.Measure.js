@@ -12,15 +12,36 @@ license: MIT-style license
 authors:
 - Aaron Newton
 
-requires:
-- core:1.2.4/Element.Style
-- core:1.2.4/Element.Dimensions
-- /MooTools.More
+requires: [Core/Element.Style, Core/Element.Dimensions]
 
 provides: [Element.Measure]
 
 ...
 */
+
+(function(){
+
+var getStylesList = function(styles, planes){
+	var list = [];
+	$each(planes, function(directions){
+		$each(directions, function(edge){
+			styles.each(function(style){
+				if (style == 'border') list.push(style + '-' + edge + '-width');
+				else list.push(style + '-' + edge);
+			});
+		});
+	});
+	return list;
+};
+
+var calculateEdgeSize = function(edge, styles){
+	var total = 0;
+	$each(styles, function(value, style){
+		if (style.test(edge)) total += value.toInt();
+	});
+	return total;
+};
+
 
 Element.implement({
 
@@ -59,10 +80,10 @@ Element.implement({
 	},
 
 	getDimensions: function(options){
-		options = $merge({computeSize: false},options);
+		options = $merge({computeSize: false}, options);
 		var dim = {};
 		var getSize = function(el, options){
-			return (options.computeSize)?el.getComputedSize(options):el.getSize();
+			return (options.computeSize) ? el.getComputedSize(options) : el.getSize();
 		};
 		var parent = this.getParent('body');
 		if (parent && this.getStyle('display') == 'none'){
@@ -80,6 +101,7 @@ Element.implement({
 	},
 
 	getComputedSize: function(options){
+
 		options = $merge({
 			styles: ['padding','border'],
 			planes: {
@@ -88,7 +110,10 @@ Element.implement({
 			},
 			mode: 'both'
 		}, options);
-		var size = {width: 0,height: 0};
+
+		var styles = {},
+			size = {width: 0, height: 0};
+
 		switch (options.mode){
 			case 'vertical':
 				delete size.width;
@@ -99,50 +124,28 @@ Element.implement({
 				delete options.planes.height;
 				break;
 		}
-		var getStyles = [];
-		//this function might be useful in other places; perhaps it should be outside this function?
-		$each(options.planes, function(plane, key){
-			plane.each(function(edge){
-				options.styles.each(function(style){
-					getStyles.push((style == 'border') ? style + '-' + edge + '-' + 'width' : style + '-' + edge);
-				});
-			});
-		});
-		var styles = {};
-		getStyles.each(function(style){ styles[style] = this.getComputedStyle(style); }, this);
-		var subtracted = [];
-		$each(options.planes, function(plane, key){ //keys: width, height, planes: ['left', 'right'], ['top','bottom']
-			var capitalized = key.capitalize();
-			size['total' + capitalized] = size['computed' + capitalized] = 0;
-			plane.each(function(edge){ //top, left, right, bottom
-				size['computed' + edge.capitalize()] = 0;
-				getStyles.each(function(style, i){ //padding, border, etc.
-					//'padding-left'.test('left') size['totalWidth'] = size['width'] + [padding-left]
-					if (style.test(edge)){
-						styles[style] = styles[style].toInt() || 0; //styles['padding-left'] = 5;
-						size['total' + capitalized] = size['total' + capitalized] + styles[style];
-						size['computed' + edge.capitalize()] = size['computed' + edge.capitalize()] + styles[style];
-					}
-					//if width != width (so, padding-left, for instance), then subtract that from the total
-					if (style.test(edge) && key != style &&
-						(style.test('border') || style.test('padding')) && !subtracted.contains(style)){
-						subtracted.push(style);
-						size['computed' + capitalized] = size['computed' + capitalized]-styles[style];
-					}
-				});
-			});
-		});
 
-		['Width', 'Height'].each(function(value){
-			var lower = value.toLowerCase();
-			if(!$chk(size[lower])) return;
-
-			size[lower] = size[lower] + this['offset' + value] + size['computed' + value];
-			size['total' + value] = size[lower] + size['total' + value];
-			delete size['computed' + value];
+		getStylesList(options.styles, options.planes).each(function(style){
+			styles[style] = this.getComputedStyle(style).toInt();
 		}, this);
 
-		return $extend(styles, size);
+		$each(options.planes, function(edges, plane){
+
+			var capitalized = plane.capitalize();
+			styles[plane] = this.getComputedStyle(plane).toInt();
+			size['total' + capitalized] = styles[plane];
+
+			edges.each(function(edge){
+				var edgesize = calculateEdgeSize(edge, styles);
+				size['computed' + edge.capitalize()] = edgesize;
+				size['total' + capitalized] += edgesize;
+			});
+			
+		}, this);
+		
+		return $extend(size, styles);
 	}
 
 });
+
+})();
