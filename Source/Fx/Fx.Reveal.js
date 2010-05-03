@@ -10,7 +10,10 @@ license: MIT-style license
 authors:
 - Aaron Newton
 
-requires: [Core/Fx.Morph, Element.Shortcuts, Element.Measure]
+requires:
+- core:1.2.4/Fx.Morph
+- /Element.Shortcuts
+- /Element.Measure
 
 provides: [Fx.Reveal]
 
@@ -36,111 +39,131 @@ Fx.Reveal = new Class({
 	},
 
 	dissolve: function(){
-		if (!this.hiding && !this.showing){
-			if (this.element.getStyle('display') != 'none'){
-				this.hiding = true;
-				this.showing = false;
-				this.hidden = true;
-				this.cssText = this.element.style.cssText;
-				var startStyles = this.element.getComputedSize({
-					styles: this.options.styles,
-					mode: this.options.mode
-				});
-				this.element.setStyle('display', this.options.display);
-				if (this.options.transitionOpacity) startStyles.opacity = 1;
-				var zero = {};
-				$each(startStyles, function(style, name){
-					zero[name] = [style, 0];
-				}, this);
-				this.element.setStyle('overflow', 'hidden');
-				var hideThese = this.options.hideInputs ? this.element.getElements(this.options.hideInputs) : null;
-				this.$chain.unshift(function(){
-					if (this.hidden){
-						this.hiding = false;
-						$each(startStyles, function(style, name){
-							startStyles[name] = style;
-						}, this);
-						this.element.style.cssText = this.cssText;
-						this.element.setStyle('display', 'none');
-						if (hideThese) hideThese.setStyle('visibility', 'visible');
-					}
+		try {
+			if (!this.hiding && !this.showing){
+				if (this.element.getStyle('display') != 'none'){
+					this.hiding = true;
+					this.showing = false;
+					this.hidden = true;
+					this.cssText = this.element.style.cssText;
+					var startStyles = this.element.getComputedSize({
+						styles: this.options.styles,
+						mode: this.options.mode
+					});
+					this.element.setStyle('display', this.options.display);
+					if (this.options.transitionOpacity) startStyles.opacity = 1;
+					var zero = {};
+					$each(startStyles, function(style, name){
+						zero[name] = [style, 0];
+					}, this);
+					this.element.setStyle('overflow', 'hidden');
+					var hideThese = this.options.hideInputs ? this.element.getElements(this.options.hideInputs) : null;
+					this.$chain.unshift(function(){
+						if (this.hidden){
+							this.hiding = false;
+							$each(startStyles, function(style, name){
+								startStyles[name] = style;
+							}, this);
+							this.element.style.cssText = this.cssText;
+							this.element.setStyle('display', 'none');
+							if (hideThese) hideThese.setStyle('visibility', 'visible');
+						}
+						this.fireEvent('hide', this.element);
+						this.callChain();
+					}.bind(this));
+					if (hideThese) hideThese.setStyle('visibility', 'hidden');
+					this.start(zero);
+				} else {
+					this.callChain.delay(10, this);
+					this.fireEvent('complete', this.element);
 					this.fireEvent('hide', this.element);
-					this.callChain();
-				}.bind(this));
-				if (hideThese) hideThese.setStyle('visibility', 'hidden');
-				this.start(zero);
-			} else {
-				this.callChain.delay(10, this);
-				this.fireEvent('complete', this.element);
-				this.fireEvent('hide', this.element);
+				}
+			} else if (this.options.link == 'chain'){
+				this.chain(this.dissolve.bind(this));
+			} else if (this.options.link == 'cancel' && !this.hiding){
+				this.cancel();
+				this.dissolve();
 			}
-		} else if (this.options.link == 'chain'){
-			this.chain(this.dissolve.bind(this));
-		} else if (this.options.link == 'cancel' && !this.hiding){
-			this.cancel();
-			this.dissolve();
+		} catch(e){
+			this.hiding = false;
+			this.element.setStyle('display', 'none');
+			this.callChain.delay(10, this);
+			this.fireEvent('complete', this.element);
+			this.fireEvent('hide', this.element);
 		}
 		return this;
 	},
 
 	reveal: function(){
-		if (!this.showing && !this.hiding){
-			if (this.element.getStyle('display') == 'none' ||
-				 this.element.getStyle('visiblity') == 'hidden' ||
-				 this.element.getStyle('opacity') == 0){
-				this.showing = true;
-				this.hiding = this.hidden =  false;
-				var startStyles;
-				this.cssText = this.element.style.cssText;
-				//toggle display, but hide it
-				this.element.measure(function(){
-					//create the styles for the opened/visible state
-					startStyles = this.element.getComputedSize({
-						styles: this.options.styles,
-						mode: this.options.mode
+		try {
+			if (!this.showing && !this.hiding){
+				if (this.element.getStyle('display') == 'none' ||
+					 this.element.getStyle('visiblity') == 'hidden' ||
+					 this.element.getStyle('opacity') == 0){
+					this.showing = true;
+					this.hiding = this.hidden =  false;
+					var startStyles;
+					this.cssText = this.element.style.cssText;
+					//toggle display, but hide it
+					this.element.measure(function(){
+						//create the styles for the opened/visible state
+						startStyles = this.element.getComputedSize({
+							styles: this.options.styles,
+							mode: this.options.mode
+						});
+					}.bind(this));
+					$each(startStyles, function(style, name){
+						startStyles[name] = style;
 					});
-				}.bind(this));
-				$each(startStyles, function(style, name){
-					startStyles[name] = style;
-				});
-				//if we're overridding height/width
-				if ($chk(this.options.heightOverride)) startStyles.height = this.options.heightOverride.toInt();
-				if ($chk(this.options.widthOverride)) startStyles.width = this.options.widthOverride.toInt();
-				if (this.options.transitionOpacity) {
-					this.element.setStyle('opacity', 0);
-					startStyles.opacity = 1;
-				}
-				//create the zero state for the beginning of the transition
-				var zero = {
-					height: 0,
-					display: this.options.display
-				};
-				$each(startStyles, function(style, name){ zero[name] = 0; });
-				//set to zero
-				this.element.setStyles($merge(zero, {overflow: 'hidden'}));
-				//hide inputs
-				var hideThese = this.options.hideInputs ? this.element.getElements(this.options.hideInputs) : null;
-				if (hideThese) hideThese.setStyle('visibility', 'hidden');
-				//start the effect
-				this.start(startStyles);
-				this.$chain.unshift(function(){
-					this.element.style.cssText = this.cssText;
-					this.element.setStyle('display', this.options.display);
-					if (!this.hidden) this.showing = false;
-					if (hideThese) hideThese.setStyle('visibility', 'visible');
+					//if we're overridding height/width
+					if ($chk(this.options.heightOverride)) startStyles.height = this.options.heightOverride.toInt();
+					if ($chk(this.options.widthOverride)) startStyles.width = this.options.widthOverride.toInt();
+					if (this.options.transitionOpacity) {
+						this.element.setStyle('opacity', 0);
+						startStyles.opacity = 1;
+					}
+					//create the zero state for the beginning of the transition
+					var zero = {
+						height: 0,
+						display: this.options.display
+					};
+					$each(startStyles, function(style, name){ zero[name] = 0; });
+					//set to zero
+					this.element.setStyles($merge(zero, {overflow: 'hidden'}));
+					//hide inputs
+					var hideThese = this.options.hideInputs ? this.element.getElements(this.options.hideInputs) : null;
+					if (hideThese) hideThese.setStyle('visibility', 'hidden');
+					//start the effect
+					this.start(startStyles);
+					this.$chain.unshift(function(){
+						this.element.style.cssText = this.cssText;
+						this.element.setStyle('display', this.options.display);
+						if (!this.hidden) this.showing = false;
+						if (hideThese) hideThese.setStyle('visibility', 'visible');
+						this.callChain();
+						this.fireEvent('show', this.element);
+					}.bind(this));
+				} else {
 					this.callChain();
+					this.fireEvent('complete', this.element);
 					this.fireEvent('show', this.element);
-				}.bind(this));
-			} else {
-				this.callChain();
-				this.fireEvent('complete', this.element);
-				this.fireEvent('show', this.element);
+				}
+			} else if (this.options.link == 'chain'){
+				this.chain(this.reveal.bind(this));
+			} else if (this.options.link == 'cancel' && !this.showing){
+				this.cancel();
+				this.reveal();
 			}
-		} else if (this.options.link == 'chain'){
-			this.chain(this.reveal.bind(this));
-		} else if (this.options.link == 'cancel' && !this.showing){
-			this.cancel();
-			this.reveal();
+		} catch(e){
+			this.element.setStyles({
+				display: this.options.display,
+				visiblity: 'visible',
+				opacity: 1
+			});
+			this.showing = false;
+			this.callChain.delay(10, this);
+			this.fireEvent('complete', this.element);
+			this.fireEvent('show', this.element);
 		}
 		return this;
 	},
@@ -159,7 +182,7 @@ Fx.Reveal = new Class({
 	cancel: function(){
 		this.parent.apply(this, arguments);
 		this.element.style.cssText = this.cssText;
-		this.hiding = false;
+		this.hidding = false;
 		this.showing = false;
 	}
 
