@@ -11,9 +11,7 @@ authors:
 - Sebastian Markbåge
 - Aaron Newton
 
-requires:
-- core:1.2.4/Selectors
-- /String.QueryString
+requires: [Core/Selectors, String.QueryString]
 
 provides: URI
 

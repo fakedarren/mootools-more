@@ -11,10 +11,7 @@ authors:
 - Aaron Newton
 - Guillermo Rauch
 
-requires:
-- core:1.2.4/Element
-- core:1.2.4/Request
-- /Log
+requires: [Core/Element, Core/Request, Log]
 
 provides: [Request.JSONP]
 

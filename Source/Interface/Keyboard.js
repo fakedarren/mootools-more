@@ -12,11 +12,7 @@ authors:
 - Aaron Newton
 - Scott Kyle
 
-requires:
-- core:1.2.4/Events
-- core:1.2.4/Options
-- core:1.2.4/Element.Event
-- /Log
+requires: [Core/Events, Core/Options, Core/Element.Event, Log]
 
 provides: [Keyboard]
 

@@ -10,9 +10,7 @@ license: MIT-style license
 authors:
 - Aaron Newton
 
-requires:
-- core:1.2.4/Class
-- /MooTools.More
+requires: [Core/Class, MooTools.More]
 
 provides: [Class.refactor]
 

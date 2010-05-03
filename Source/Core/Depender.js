@@ -10,11 +10,7 @@ license: MIT-style license
 authors:
 - Aaron Newton
 
-requires:
-- core:1.2.4/Element.Events
-- core:1.2.4/Request.JSON
-- /MooTools.More
-- /Log
+requires: [Core/Element.Events, Core/Request.JSON, MooTools.More, Log]
 
 provides: Depender
 

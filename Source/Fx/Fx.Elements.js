@@ -10,9 +10,7 @@ license: MIT-style license
 authors:
 - Valerio Proietti
 
-requires:
-- core:1.2.4/Fx.CSS
-- /MooTools.More
+requires: [Core/Fx.Css, MooTools.More]
 
 provides: [Fx.Elements]
 

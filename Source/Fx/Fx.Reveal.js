@@ -10,10 +10,7 @@ license: MIT-style license
 authors:
 - Aaron Newton
 
-requires:
-- core:1.2.4/Fx.Morph
-- /Element.Shortcuts
-- /Element.Measure
+requires: [Core/Fx.Morph, Element.Shortcuts, Element.Measure]
 
 provides: [Fx.Reveal]
 

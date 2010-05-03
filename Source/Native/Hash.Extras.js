@@ -10,9 +10,7 @@ license: MIT-style license
 authors:
 - Aaron Newton
 
-requires:
-- core:1.2.4/Hash.base
-- /MooTools.More
+requires: [Core/Hash]
 
 provides: [Hash.Extras]
 

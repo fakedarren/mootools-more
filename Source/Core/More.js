@@ -12,8 +12,7 @@ authors:
 - Thomas Aylott
 - Scott Kyle
 
-requires:
-- core:1.2.4/MooTools
+requires: [Core]
 
 provides: [MooTools.More]
 

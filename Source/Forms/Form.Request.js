@@ -10,13 +10,7 @@ license: MIT-style license
 authors:
 - Aaron Newton
 
-requires:
-- core:1.2.4/Element.Event
-- core:1.2.4/Request.HTML
-- /Class.Binds
-- /Class.Occlude
-- /Spinner
-- /String.QueryString
+requires: [Core/Element.Event, Core/Request.HTML, Class.Binds, Class.Occlude, Spinner, String.QueryString]
 
 provides: [Form.Request]
 

@@ -10,10 +10,7 @@ license: MIT-style license
 authors:
 - Aaron Newton
 
-requires:
-- core:1.2.4/Fx.Tween
-- /Class.refactor
-- /Mask
+requires: [Core/Fx.Tween, Class.Refactor, Mask]
 
 provides: [Spinner]
 

@@ -10,8 +10,7 @@ license: MIT-style license
 authors:
 - Aaron Newton
 
-requires:
-- /Form.Validator
+requires: [Form.Validator]
 
 provides: [Form.Validator.Extras]
 

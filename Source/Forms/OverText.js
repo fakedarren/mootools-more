@@ -10,14 +10,7 @@ license: MIT-style license
 authors:
 - Aaron Newton
 
-requires:
-- core:1.2.4/Options
-- core:1.2.4/Events
-- core:1.2.4/Element.Event
-- /Class.Binds
-- /Class.Occlude
-- /Element.Position
-- /Element.Shortcuts
+requires: [Core/Options, Core/Events, Core/Element.Event, Class.Binds, Class.Occlude, Element.Position, Element.Shortcuts]
 
 provides: [OverText]
 

@@ -10,12 +10,7 @@ license: MIT-style license
 authors:
 - Aaron Newton
 
-requires:
-- core:1.2.4/Element.Event
-- core:1.2.4/Element.Style
-- core:1.2.4/Options Events
-- /Element.Position
-- /Class.Occlude
+requires: [Core/Element.Event, Core/Element.Style, Core/Options, Core/Events, Element.Position, Class.Occlude]
 
 provides: [IframeShim]
 

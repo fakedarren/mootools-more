@@ -11,8 +11,7 @@ authors:
 - Aaron Newton
 - Scott Kyle
 
-requires:
-- /Date
+requires: [Date]
 
 provides: [Date.Extras]
 

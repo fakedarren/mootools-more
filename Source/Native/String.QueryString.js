@@ -10,10 +10,7 @@ license: MIT-style license
 authors:
 - Sebastian Markbåge, Aaron Newton, Lennart Pilon, Valerio Proietti
 
-requires:
-- core:1.2.4/Array
-- core:1.2.4/String
-- /MooTools.More
+requires: [Core/Array, Core/String]
 
 provides: [String.QueryString]
 

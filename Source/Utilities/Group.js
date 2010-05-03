@@ -10,9 +10,7 @@ license: MIT-style license
 authors:
 - Valerio Proietti
 
-requires:
-- core:1.2.4/Events
-- /MooTools.More
+requires: [Core/Events]
 
 provides: [Group]
 

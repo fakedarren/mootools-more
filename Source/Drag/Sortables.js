@@ -10,8 +10,7 @@ license: MIT-style license
 authors:
 - Tom Occhino
 
-requires:
-- /Drag.Move
+requires: [Drag.Move]
 
 provides: [Slider]
 

@@ -11,12 +11,7 @@ authors:
 - Harald Kirschner
 - Aaron Newton
 
-requires:
-- core:1.2.4/Hash
-- /HtmlTable
-- /Class.refactor
-- /Element.Delegation
-- /Date
+requires: [Core/Hash, HtmlTable, Class.Refactor, Element.Delegation, Date]
 
 provides: [HtmlTable.Sort]
 

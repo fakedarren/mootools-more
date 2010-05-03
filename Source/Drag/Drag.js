@@ -12,12 +12,7 @@ authors:
 - Tom Occhinno
 - Jan Kassens
 
-requires:
-- core:1.2.4/Events
-- core:1.2.4/Options
-- core:1.2.4/Element.Event
-- core:1.2.4/Element.Style
-- /MooTools.More
+requires: [Core/Events, Core/Options, Core/Element.Event, Core/Element.Style, MooTools.More]
 
 provides: [Drag]
 

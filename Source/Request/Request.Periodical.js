@@ -10,9 +10,7 @@ license: MIT-style license
 authors:
 - Christoph Pojer
 
-requires:
-- core:1.2.4/Request
-- /MooTools.More
+requires: [Core/Request, MooTools.More]
 
 provides: [Request.Periodical]
 

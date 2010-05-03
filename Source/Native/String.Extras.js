@@ -11,10 +11,7 @@ authors:
 - Aaron Newton
 - Guillermo Rauch
 
-requires:
-- core:1.2.4/String
-- core:1.2.4/$util
-- core:1.2.4/Array
+requires: [Core/String, Core/Array]
 
 provides: [String.Extras]
 

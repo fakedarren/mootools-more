@@ -1,7 +1,7 @@
 /*
 ---
 
-script: Keyboard.js
+script: Keyboard.Extras.js
 
 description: Enhances Keyboard by adding the ability to name and describe keyboard shortcuts, and the ability to grab shortcuts by name and bind the shortcut to different keys.
 
@@ -10,9 +10,7 @@ license: MIT-style license
 authors:
 - Perrin Westrich
 
-requires:
-- core:1.2.4/Function
-- /Keyboard.Extras
+requires: [Core/Function, Keyboard]
 
 provides: [Keyboard.Extras]
 

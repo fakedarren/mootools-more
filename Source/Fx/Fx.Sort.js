@@ -10,10 +10,7 @@ license: MIT-style license
 authors:
 - Aaron Newton
 
-requires:
-- core:1.2.4/Element.Dimensions
-- /Fx.Elements
-- /Element.Measure
+requires: [Core/Element.Dimensions, Fx.Elements, Element.Measure]
 
 provides: [Fx.Sort]
 

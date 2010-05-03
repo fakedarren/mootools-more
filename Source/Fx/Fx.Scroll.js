@@ -10,11 +10,7 @@ license: MIT-style license
 authors:
 - Valerio Proietti
 
-requires:
-- core:1.2.4/Fx
-- core:1.2.4/Element.Event
-- core:1.2.4/Element.Dimensions
-- /MooTools.More
+requires: [Core/Fx, Core/Element.Event, Core/Element.Dimensions, MooTools.More]
 
 provides: [Fx.Scroll]
 

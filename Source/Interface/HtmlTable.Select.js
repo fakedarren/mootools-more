@@ -11,11 +11,7 @@ authors:
 - Harald Kirschner
 - Aaron Newton
 
-requires:
-- /Keyboard
-- /HtmlTable
-- /Class.refactor
-- /Element.Delegation
+requires: [Keyboard, HtmlTable, Class.Refactor, Element.Delegation]
 
 provides: [HtmlTable.Select]
 

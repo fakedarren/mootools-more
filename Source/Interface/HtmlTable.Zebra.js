@@ -11,9 +11,7 @@ authors:
 - Harald Kirschner
 - Aaron Newton
 
-requires:
-- /HtmlTable
-- /Class.refactor
+requires: [HtmlTable, Class.Refactor]
 
 provides: [HtmlTable.Zebra]
 

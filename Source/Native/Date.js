@@ -13,13 +13,7 @@ authors:
 - Harald Kirshner - mail [at] digitarald.de; http://digitarald.de
 - Scott Kyle - scott [at] appden.com; http://appden.com
 
-requires:
-- core:1.2.4/Array
-- core:1.2.4/String
-- core:1.2.4/Number
-- core:1.2.4/Lang
-- core:1.2.4/Date.English.US
-- /MooTools.More
+requires: [Core/Array, Core/String, Core/Number, Lang, Date.English.US, MooTools.More]
 
 provides: [Date]
 

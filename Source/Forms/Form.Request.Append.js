@@ -10,10 +10,7 @@ license: MIT-style license
 authors:
 - Aaron Newton
 
-requires:
-- /Form.Request
-- /Fx.Reveal
-- /Elements.from
+requires: [Form.Request, Fx.Reveal, Elements.From]
 
 provides: [Form.Request.Append]
 

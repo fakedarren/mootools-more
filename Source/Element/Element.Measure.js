@@ -12,15 +12,63 @@ license: MIT-style license
 authors:
 - Aaron Newton
 
-requires:
-- core:1.2.4/Element.Style
-- core:1.2.4/Element.Dimensions
-- /MooTools.More
+requires: [Core/Element.Style, Core/Element.Dimensions, MooTools.More]
 
 provides: [Element.Measure]
 
 ...
 */
+
+(function(){
+
+// Gets a list of styles. For instance if you ask for border it will get border-width styles.
+var calculateStylesList = function(styles, planes){
+	var list = [];
+	$each(planes, function(directions){
+		$each(directions, function(edge){
+			styles.each(function(style){
+				if (style == 'border') list.push(style + '-' + edge + '-width');
+				else list.push(style + '-' + edge);
+			});
+		});
+	});
+	return list;
+};
+
+// Gets a size of an edge - padding, border, whatever.
+var calculateEdgeSize = function(edge, styles){
+	var total = 0;
+	$each(styles, function(value, style){
+		if (style.test(edge)){
+			total += value.toInt();
+		}
+	});
+	return total;
+};
+
+// Plane: width or height
+// Edges: [left, right] or [top, bottom]
+// Styles: An array of styles
+var calculatePlaneSize = function(el, plane, edges, styles){
+	
+	console.log(el);
+	
+	var total = 0;
+	
+	$each(styles, function(value, style){
+		edges.each(function(property){
+			if (style.test(property)){
+				total += value.toInt();
+			}
+		});
+	});
+	
+	total += el.getComputedStyle(plane).toInt();
+	console.log(total);
+	
+	return total;
+	
+};
 
 Element.implement({
 
@@ -59,10 +107,10 @@ Element.implement({
 	},
 
 	getDimensions: function(options){
-		options = $merge({computeSize: false},options);
+		options = $merge({computeSize: false}, options);
 		var dim = {};
 		var getSize = function(el, options){
-			return (options.computeSize)?el.getComputedSize(options):el.getSize();
+			return (options.computeSize) ? el.getComputedSize(options) : el.getSize();
 		};
 		var parent = this.getParent('body');
 		if (parent && this.getStyle('display') == 'none'){
@@ -80,6 +128,7 @@ Element.implement({
 	},
 
 	getComputedSize: function(options){
+	
 		options = $merge({
 			styles: ['padding','border'],
 			planes: {
@@ -88,7 +137,7 @@ Element.implement({
 			},
 			mode: 'both'
 		}, options);
-		var size = {width: 0,height: 0};
+		
 		switch (options.mode){
 			case 'vertical':
 				delete size.width;
@@ -99,38 +148,36 @@ Element.implement({
 				delete options.planes.height;
 				break;
 		}
-		var getStyles = [];
-		//this function might be useful in other places; perhaps it should be outside this function?
-		$each(options.planes, function(plane, key){
-			plane.each(function(edge){
-				options.styles.each(function(style){
-					getStyles.push((style == 'border') ? style + '-' + edge + '-' + 'width' : style + '-' + edge);
-				});
-			});
-		});
-		var styles = {};
-		getStyles.each(function(style){ styles[style] = this.getComputedStyle(style); }, this);
+
+		var size = {width: 0, height: 0},
+			stylesToGet = calculateStylesList(options.styles, options.planes),
+			styles = {};
+		
+
+		stylesToGet.each(function(style){
+			styles[style] = this.getComputedStyle(style).toInt();
+		}, this);
+
+		var getStyles = stylesToGet;		
 		var subtracted = [];
+		
 		$each(options.planes, function(plane, key){ //keys: width, height, planes: ['left', 'right'], ['top','bottom']
+			
 			var capitalized = key.capitalize();
+			
 			size['total' + capitalized] = size['computed' + capitalized] = 0;
+			
 			plane.each(function(edge){ //top, left, right, bottom
-				size['computed' + edge.capitalize()] = 0;
+				
+				size['computed' + edge.capitalize()] = calculateEdgeSize(edge, styles);
+				
 				getStyles.each(function(style, i){ //padding, border, etc.
-					//'padding-left'.test('left') size['totalWidth'] = size['width'] + [padding-left]
 					if (style.test(edge)){
-						styles[style] = styles[style].toInt() || 0; //styles['padding-left'] = 5;
 						size['total' + capitalized] = size['total' + capitalized] + styles[style];
-						size['computed' + edge.capitalize()] = size['computed' + edge.capitalize()] + styles[style];
-					}
-					//if width != width (so, padding-left, for instance), then subtract that from the total
-					if (style.test(edge) && key != style &&
-						(style.test('border') || style.test('padding')) && !subtracted.contains(style)){
-						subtracted.push(style);
-						size['computed' + capitalized] = size['computed' + capitalized]-styles[style];
 					}
 				});
 			});
+			
 		});
 
 		['Width', 'Height'].each(function(value){
@@ -146,3 +193,5 @@ Element.implement({
 	}
 
 });
+
+})();

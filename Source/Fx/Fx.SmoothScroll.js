@@ -10,9 +10,7 @@ license: MIT-style license
 authors:
 - Valerio Proietti
 
-requires:
-- core:1.2.4/Selectors
-- /Fx.Scroll
+requires: [Core/Selectors, Fx.Scroll]
 
 provides: [Fx.SmoothScroll]
 

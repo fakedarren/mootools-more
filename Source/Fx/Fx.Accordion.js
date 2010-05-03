@@ -10,9 +10,7 @@ license: MIT-style license
 authors:
 - Valerio Proietti
 
-requires:
-- core:1.2.4/Element.Event
-- /Fx.Elements
+requires: [Core/Element.Event, Fx.Elements]
 
 provides: [Fx.Accordion]
 

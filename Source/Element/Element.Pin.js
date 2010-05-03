@@ -10,11 +10,7 @@ license: MIT-style license
 authors:
 - Aaron Newton
 
-requires:
-- core:1.2.4/Element.Event
-- core:1.2.4/Element.Dimensions
-- core:1.2.4/Element.Style
-- /MooTools.More
+requires: [Core/Element.Event, Core/Element.Dimensions, Core/Element.Style, MooTools.More]
 
 provides: [Element.Pin]
 

@@ -11,10 +11,7 @@ authors:
 - Valerio Proietti
 - Aaron Newton
 
-requires:
-- core:1.2.4/Cookie
-- core:1.2.4/JSON
-- /MooTools.More
+requires: [Core/Cookie, Core/JSON]
 
 provides: [Hash.Cookie]
 

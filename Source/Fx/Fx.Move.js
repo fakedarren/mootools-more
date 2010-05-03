@@ -10,9 +10,7 @@ license: MIT-style license
 authors:
 - Aaron Newton
 
-requires:
-- core:1.2.4/Fx.Morph
-- /Element.Position
+requires: Core/Fx.Morph, Element.Position]
 
 provides: [Fx.Move]
 

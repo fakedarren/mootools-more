@@ -10,8 +10,7 @@ license: MIT-style license
 authors:
 - Christoph Pojer
 
-requires:
-- core:1.2.4/Array
+requires: [Core/Array]
 
 provides: [Array.Extras]
 

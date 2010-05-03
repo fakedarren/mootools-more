@@ -10,9 +10,7 @@ license: MIT-style license
 authors:
 - Valerio Proietti
 
-requires:
-- core:1.2.4/Element.Event
-- /MooTools.More
+requires: [Core/Element.Event, MooTools.More]
 
 provides: [Assets]
 

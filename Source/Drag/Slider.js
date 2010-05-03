@@ -10,12 +10,7 @@ license: MIT-style license
 authors:
 - Valerio Proietti
 
-requires:
-- core:1.2.4/Element.Dimensions
-- /Class.Binds
-- /Drag
-- /Element.Dimensions
-- /Element.Measure
+requires: [Core/Element.Dimensions, Class.Binds, Drag, Element.Measure]
 
 provides: [Slider]
 

@@ -10,13 +10,7 @@ license: MIT-style license
 authors:
 - Valerio Proietti
 
-requires:
-- core:1.2.4/Array
-- core:1.2.4/String
-- core:1.2.4/Number
-- core:1.2.4/Hash
-- core:1.2.4/Function
-- core:1.2.4/$util
+requires: [Core/Array, Core/String, Core/Number, Core/Hash, Core/Function]
 
 provides: [Color]
 

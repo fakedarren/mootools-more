@@ -10,9 +10,7 @@ license: MIT-style license
 authors:
 - Valerio Proietti
 
-requires:
-- core:1.2.4/Fx Element.Style
-- /MooTools.More
+requires: [Core/Fx, Core/Element.Style, MooTools.More]
 
 provides: [Fx.Slide]
 

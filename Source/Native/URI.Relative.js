@@ -11,9 +11,7 @@ authors:
 - Sebastian Markbåge
 
 
-requires:
-- /Class.refactor
-- /URI
+requires: [Class.Refactor, URI]
 
 provides: [URI.Relative]
 
